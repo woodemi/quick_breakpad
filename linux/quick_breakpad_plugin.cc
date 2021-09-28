@@ -5,6 +5,9 @@
 #include <sys/utsname.h>
 
 #include <cstring>
+#include <iostream>
+
+#include "client/linux/handler/exception_handler.h"
 
 #define QUICK_BREAKPAD_PLUGIN(obj) \
   (G_TYPE_CHECK_INSTANCE_CAST((obj), quick_breakpad_plugin_get_type(), \
@@ -45,7 +48,16 @@ static void quick_breakpad_plugin_class_init(QuickBreakpadPluginClass* klass) {
   G_OBJECT_CLASS(klass)->dispose = quick_breakpad_plugin_dispose;
 }
 
-static void quick_breakpad_plugin_init(QuickBreakpadPlugin* self) {}
+static bool dumpCallback(const google_breakpad::MinidumpDescriptor& descriptor,
+                         void *context, bool succeeded) {
+  std::cout << "Dump path: " << descriptor.path() << std::endl;
+  return succeeded;
+}
+
+static void quick_breakpad_plugin_init(QuickBreakpadPlugin* self) {
+  google_breakpad::MinidumpDescriptor descriptor("/tmp");
+  static google_breakpad::ExceptionHandler handler(descriptor, nullptr, dumpCallback, nullptr, true, -1);
+}
 
 static void method_call_cb(FlMethodChannel* channel, FlMethodCall* method_call,
                            gpointer user_data) {
