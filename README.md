@@ -79,12 +79,12 @@ $ $CLI_BREAKPAD/breakpad/mac/$(arch)/minidump_stackwalk A1D2CF75-848E-42C4-8F5C-
 
 ## Windows
 
-TODO
+https://github.com/woodemi/quick_breakpad/issues/4
 
 ## macOS
 
-TODO
+https://github.com/woodemi/quick_breakpad/issues/5
 
 ## Linux
 
-TODO
+https://github.com/woodemi/quick_breakpad/issues/6
