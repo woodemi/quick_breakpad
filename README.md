@@ -6,6 +6,35 @@ A new flutter plugin project.
 
 > $CLI_BREAKPAD is local clone of https://github.com/Sunbreak/cli-breakpad.trial
 
+## Android
+
+- run on macOS/Linux
+
+```sh
+# Device/emulator connected
+$ android_abi=`adb shell getprop ro.product.cpu.abi`
+$ pushd example
+$ flutter run
+✓ Built build/app/outputs/flutter-apk/app-debug.apk.
+I/quick_breakpad(28255): JNI_OnLoad
+I quick_breakpad_example(28255): JNI_OnLoad
+D quick_breakpad(28255): Dump path: /data/data/com.example.quick_breakpad_example/cache/54ecbb9d-cef5-4fa9-5b6869b2-198bc87e.dmp
+$ popd
+$ adb shell "run-as com.example.quick_breakpad_example sh -c 'cat /data/data/com.example.quick_breakpad_example/cache/breakpad/54ecbb9d-cef5-4fa9-5b6869b2-198bc87e.dmp'" >| 54ecbb9d-cef5-4fa9-5b6869b2-198bc87e.dmp
+```
+
+- run on Linux (e.g. https://multipass.run/)
+
+> Only C/C++ crash for now
+
+```sh
+$ $CLI_BREAKPAD/breakpad/linux/$(arch)/dump_syms example/build/app/intermediates/cmake/debug/obj/${android_abi}/libquick-breakpad-example.so > libquick-breakpad-example.so.sym
+$ uuid=`awk 'FNR==1{print \$4}' libquick-breakpad-example.so.sym`
+$ mkdir -p symbols/libquick-breakpad-example.so/$uuid/
+$ mv ./libquick-breakpad-example.so.sym symbols/libquick-breakpad-example.so/$uuid/
+$ $CLI_BREAKPAD/breakpad/linux/$(arch)/minidump_stackwalk 54ecbb9d-cef5-4fa9-5b6869b2-198bc87e.dmp symbols/ > libquick-breakpad-example.so
+```
+
 ## iOS
 
 - run on macOS

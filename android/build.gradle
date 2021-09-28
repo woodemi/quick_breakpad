@@ -27,4 +27,14 @@ android {
     defaultConfig {
         minSdkVersion 16
     }
+
+    ndkVersion "21.4.7075529" // ndk r21e LTS
+
+    externalNativeBuild {
+        // Encapsulates your CMake build configurations.
+        cmake {
+            // Provides a relative path to your CMake build script.
+            path "src/main/cpp/CMakeLists.txt"
+        }
+    }
 }
