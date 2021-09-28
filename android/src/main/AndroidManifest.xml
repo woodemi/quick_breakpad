@@ -1,3 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  package="com.example.quick_breakpad">
+    package="com.example.quick_breakpad">
+
+    <application>
+        <provider
+            android:name=".QuickBreakpadInitProvider"
+            android:authorities="${applicationId}.QuickBreakpadInitProvider" />
+    </application>
 </manifest>
