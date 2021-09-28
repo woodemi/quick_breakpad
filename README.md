@@ -1,6 +1,6 @@
 # quick_breakpad
 
-A cross-platform flutter plugin for `C/C++/ObjC` crash report via [Googel Breakpad](https://chromium.googlesource.com/breakpad/breakpad)
+A cross-platform flutter plugin for `C/C++/ObjC` crash report via [Google Breakpad](https://chromium.googlesource.com/breakpad/breakpad)
 
 # Use breakpad for quick_breakpad_example
 

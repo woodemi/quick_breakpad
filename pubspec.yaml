@@ -1,5 +1,5 @@
 name: quick_breakpad
-description: A cross-platform flutter plugin for `C/C++/ObjC` crash report via Googel Breakpad
+description: A cross-platform flutter plugin for `C/C++/ObjC` crash report via Google Breakpad
 version: 0.1.0
 homepage: https://github.com/woodemi/quick_breakpad
 
