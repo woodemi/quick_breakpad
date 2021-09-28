@@ -35,6 +35,12 @@ $ mv ./libquick-breakpad-example.so.sym symbols/libquick-breakpad-example.so/$uu
 $ $CLI_BREAKPAD/breakpad/linux/$(arch)/minidump_stackwalk 54ecbb9d-cef5-4fa9-5b6869b2-198bc87e.dmp symbols/ > libquick-breakpad-example.so.log
 ```
 
+- Show parsed Android log: `head -n 20 libquick-breakpad-example.so.log`
+
+So the crash is at line 30 of `quick_breakpad_example.cpp`
+
+![image](https://user-images.githubusercontent.com/7928961/135052776-226168bc-ee60-442c-b6b3-78987714e63d.png)
+
 ## iOS
 
 - run on macOS
@@ -76,6 +82,12 @@ $ mkdir -p symbols/Runner/$uuid/
 $ mv ./Runner.sym symbols/Runner/$uuid/
 $ $CLI_BREAKPAD/breakpad/mac/$(arch)/minidump_stackwalk A1D2CF75-848E-42C4-8F5C-0406E8520647.dmp symbols > Runner.log
 ```
+
+- Show parsed iOS log: `head -n 20 Runner.log`
+
+So the crash is at line 11 of `AppDelegate.m`
+
+![image](https://user-images.githubusercontent.com/7928961/135052660-3f5ebf3a-df20-4176-906e-89c92e76b3f2.png)
 
 ## Windows
 
