@@ -1,6 +1,6 @@
 # quick_breakpad
 
-A new flutter plugin project.
+A cross-platform flutter plugin for `C/C++/ObjC` crash report via [Googel Breakpad](https://chromium.googlesource.com/breakpad/breakpad)
 
 # Use breakpad for quick_breakpad_example
 
@@ -32,7 +32,7 @@ $ $CLI_BREAKPAD/breakpad/linux/$(arch)/dump_syms example/build/app/intermediates
 $ uuid=`awk 'FNR==1{print \$4}' libquick-breakpad-example.so.sym`
 $ mkdir -p symbols/libquick-breakpad-example.so/$uuid/
 $ mv ./libquick-breakpad-example.so.sym symbols/libquick-breakpad-example.so/$uuid/
-$ $CLI_BREAKPAD/breakpad/linux/$(arch)/minidump_stackwalk 54ecbb9d-cef5-4fa9-5b6869b2-198bc87e.dmp symbols/ > libquick-breakpad-example.so
+$ $CLI_BREAKPAD/breakpad/linux/$(arch)/minidump_stackwalk 54ecbb9d-cef5-4fa9-5b6869b2-198bc87e.dmp symbols/ > libquick-breakpad-example.so.log
 ```
 
 ## iOS
@@ -76,3 +76,15 @@ $ mkdir -p symbols/Runner/$uuid/
 $ mv ./Runner.sym symbols/Runner/$uuid/
 $ $CLI_BREAKPAD/breakpad/mac/$(arch)/minidump_stackwalk A1D2CF75-848E-42C4-8F5C-0406E8520647.dmp symbols > Runner.log
 ```
+
+## Windows
+
+TODO
+
+## macOS
+
+TODO
+
+## Linux
+
+TODO
