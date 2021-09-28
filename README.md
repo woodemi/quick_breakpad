@@ -20,7 +20,7 @@ I/quick_breakpad(28255): JNI_OnLoad
 I quick_breakpad_example(28255): JNI_OnLoad
 D quick_breakpad(28255): Dump path: /data/data/com.example.quick_breakpad_example/cache/54ecbb9d-cef5-4fa9-5b6869b2-198bc87e.dmp
 $ popd
-$ adb shell "run-as com.example.quick_breakpad_example sh -c 'cat /data/data/com.example.quick_breakpad_example/cache/breakpad/54ecbb9d-cef5-4fa9-5b6869b2-198bc87e.dmp'" >| 54ecbb9d-cef5-4fa9-5b6869b2-198bc87e.dmp
+$ adb shell "run-as com.example.quick_breakpad_example sh -c 'cat /data/data/com.example.quick_breakpad_example/cache/54ecbb9d-cef5-4fa9-5b6869b2-198bc87e.dmp'" >| 54ecbb9d-cef5-4fa9-5b6869b2-198bc87e.dmp
 ```
 
 - run on Linux (e.g. https://multipass.run/)

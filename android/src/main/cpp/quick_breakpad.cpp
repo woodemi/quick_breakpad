@@ -35,7 +35,7 @@ JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM *vm, void *reserved) {
     }
 
     char app_cache_dir[128] = {0};
-    sprintf(app_cache_dir, "/data/data/%s/cache/breakpad", application_id);
+    sprintf(app_cache_dir, "/data/data/%s/cache", application_id);
     google_breakpad::MinidumpDescriptor descriptor(app_cache_dir);
     static google_breakpad::ExceptionHandler handler(descriptor, nullptr, dumpCallback, nullptr,
                                                      true, -1);
