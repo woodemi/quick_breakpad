@@ -41,5 +41,7 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>BreakpadURL</key>
+	<string>ANY URL</string>
 </dict>
 </plist>
