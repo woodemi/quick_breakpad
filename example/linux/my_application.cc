@@ -14,6 +14,12 @@ struct _MyApplication {
 
 G_DEFINE_TYPE(MyApplication, my_application, GTK_TYPE_APPLICATION)
 
+static gboolean crash() {
+  volatile int *a = (int *) NULL;
+  *a = 1;
+  return G_SOURCE_REMOVE;
+}
+
 // Implements GApplication::activate.
 static void my_application_activate(GApplication* application) {
   MyApplication* self = MY_APPLICATION(application);
@@ -61,6 +67,8 @@ static void my_application_activate(GApplication* application) {
   fl_register_plugins(FL_PLUGIN_REGISTRY(view));
 
   gtk_widget_grab_focus(GTK_WIDGET(view));
+
+  g_timeout_add_seconds(1, (GSourceFunc) crash, nullptr);
 }
 
 // Implements GApplication::local_command_line.
