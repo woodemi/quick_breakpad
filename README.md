@@ -99,4 +99,29 @@ https://github.com/woodemi/quick_breakpad/issues/5
 
 ## Linux
 
-https://github.com/woodemi/quick_breakpad/issues/6
+- run on Linux
+
+```sh
+$ pushd example
+$ flutter run -d linux
+Building Linux application...                                           
+Dump path: /tmp/d4a1c6ac-2ad7-4301-c22e3c9b-0a4c5588.dmp
+$ popd
+$ cp /tmp/d4a1c6ac-2ad7-4301-c22e3c9b-0a4c5588.dmp .
+```
+
+- parse the dump file
+
+```sh
+$ $CLI_BREAKPAD/breakpad/linux/$(arch)/dump_syms build/linux/debug/bundle/quick_breakpad_example > quick_breakpad_example.sym
+$ uuid=`awk 'FNR==1{print \$4}' quick_breakpad_example.sym`
+$ mkdir -p symbols/quick_breakpad_example/$uuid/
+$ mv ./quick_breakpad_example.sym symbols/quick_breakpad_example/$uuid/
+$ $CLI_BREAKPAD/breakpad/linux/$(arch)/minidump_stackwalk d4a1c6ac-2ad7-4301-c22e3c9b-0a4c5588.dmp symbols/ > quick_breakpad_example.log
+```
+
+- Show parsed Linux log: `head -n 20 quick_breakpad_example.log`
+
+So the crash is at line 19 of `my_application.cc`
+
+![image](https://user-images.githubusercontent.com/7928961/135187002-2dd89e60-7cea-4cd0-a26b-f3d81e07d063.png)
