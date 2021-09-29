@@ -1,3 +1,7 @@
+## 0.2.0
+
+* Support Linux dump crash report into tmp
+
 ## 0.1.0+1
 
 * Fix missing breakpad directory on Android
