@@ -2,8 +2,6 @@
 //  Generated file. Do not edit.
 //
 
-// clang-format off
-
 #include "generated_plugin_registrant.h"
 
 #include <quick_breakpad/quick_breakpad_plugin.h>
