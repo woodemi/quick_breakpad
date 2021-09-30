@@ -113,7 +113,8 @@ $ cp /tmp/d4a1c6ac-2ad7-4301-c22e3c9b-0a4c5588.dmp .
 - parse the dump file
 
 ```sh
-$ $CLI_BREAKPAD/breakpad/linux/$(arch)/dump_syms build/linux/debug/bundle/quick_breakpad_example > quick_breakpad_example.sym
+# flutterArch=x64 or arm64
+$ $CLI_BREAKPAD/breakpad/linux/$(arch)/dump_syms build/linux/${flutterArch}/debug/bundle/quick_breakpad_example > quick_breakpad_example.sym
 $ uuid=`awk 'FNR==1{print \$4}' quick_breakpad_example.sym`
 $ mkdir -p symbols/quick_breakpad_example/$uuid/
 $ mv ./quick_breakpad_example.sym symbols/quick_breakpad_example/$uuid/
