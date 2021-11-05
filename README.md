@@ -91,7 +91,53 @@ So the crash is at line 11 of `AppDelegate.m`
 
 ## Windows
 
-https://github.com/woodemi/quick_breakpad/issues/4
+1. Run the example
+
+- run on Windows
+
+```bat
+rem Command Prompt
+> pushd example
+> flutter run -d windows
+Building Windows application...                                         
+dump_path: .
+minidump_id: 34cd2b95-aef1-4003-ae75-1c848b18aad2
+> popd
+> copy example\34cd2b95-aef1-4003-ae75-1c848b18aad2.dmp .
+```
+
+2. Parse the dump file
+
+- run on Windows
+
+```bat
+rem Command Prompt
+> %CLI_BREAKPAD%\windows\%PROCESSOR_ARCHITECTURE%\dump_syms example\build\windows\runner\Debug\quick_breakpad_example.pdb > quick_breakpad_example.sym
+```
+
+- run on Linux
+
+```bat
+# bash or zsh
+$ uuid=`awk 'FNR==1{print \$4}' quick_breakpad_example.sym`
+$ mkdir -p symbols/quick_breakpad_example.pdb/$uuid/
+$ mv ./quick_breakpad_example.sym symbols/quick_breakpad_example.pdb/$uuid/
+$ ./breakpad/linux/$(arch)/minidump_stackwalk 34cd2b95-aef1-4003-ae75-1c848b18aad2.dmp symbols > quick_breakpad_example.log
+```
+
+3. Show parsed Linux log
+
+- run on Linux
+
+```sh
+# bash or zsh
+$ head -n 20 quick_breakpad_example.log
+```
+
+So the crash is at line 23 of `flutter_windows.cpp`
+
+![image](https://user-images.githubusercontent.com/7928961/140525793-a5b71332-7a42-4eba-8b75-16a5acb78c4c.png)
+
 
 ## macOS
 
