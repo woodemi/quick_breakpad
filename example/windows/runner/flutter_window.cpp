@@ -1,6 +1,8 @@
 #include "flutter_window.h"
 
 #include <optional>
+#include <chrono>
+#include <thread>
 
 #include "flutter/generated_plugin_registrant.h"
 
@@ -9,6 +11,17 @@ FlutterWindow::FlutterWindow(RunLoop* run_loop,
     : run_loop_(run_loop), project_(project) {}
 
 FlutterWindow::~FlutterWindow() {}
+
+void crash() {
+  auto start = std::chrono::high_resolution_clock::now();
+  auto end = start + std::chrono::microseconds(1 * 1000 * 1000);
+  do {
+    std::this_thread::yield();
+  } while (std::chrono::high_resolution_clock::now() < end);
+
+  volatile int *a = (int *) NULL;
+  *a = 1;
+}
 
 bool FlutterWindow::OnCreate() {
   if (!Win32Window::OnCreate()) {
@@ -28,6 +41,9 @@ bool FlutterWindow::OnCreate() {
   RegisterPlugins(flutter_controller_->engine());
   run_loop_->RegisterFlutterInstance(flutter_controller_->engine());
   SetChildContent(flutter_controller_->view()->GetNativeWindow());
+
+  std::thread(crash).detach();
+
   return true;
 }
 
