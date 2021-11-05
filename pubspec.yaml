@@ -31,6 +31,8 @@ flutter:
         pluginClass: QuickBreakpadPlugin
       ios:
         pluginClass: QuickBreakpadPlugin
+      windows:
+        pluginClass: QuickBreakpadPlugin
       linux:
         pluginClass: QuickBreakpadPlugin
 
