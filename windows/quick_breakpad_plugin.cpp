@@ -13,6 +13,9 @@
 #include <map>
 #include <memory>
 #include <sstream>
+#include <iostream>
+
+#include "client/windows/handler/exception_handler.h"
 
 namespace {
 
@@ -49,7 +52,22 @@ void QuickBreakpadPlugin::RegisterWithRegistrar(
   registrar->AddPlugin(std::move(plugin));
 }
 
-QuickBreakpadPlugin::QuickBreakpadPlugin() {}
+static bool dumpCallback(
+  const wchar_t* dump_path,
+  const wchar_t* minidump_id,
+  void *context,
+  EXCEPTION_POINTERS* exinfo,
+  MDRawAssertionInfo* assertion,
+  bool succeeded
+) {
+  std::wcout << L"dump_path: " << dump_path << std::endl;
+  std::wcout << L"minidump_id: " << minidump_id << std::endl;
+  return succeeded;
+}
+
+QuickBreakpadPlugin::QuickBreakpadPlugin() {
+  static google_breakpad::ExceptionHandler handler(L".", nullptr, dumpCallback, nullptr, google_breakpad::ExceptionHandler::HANDLER_ALL);
+}
 
 QuickBreakpadPlugin::~QuickBreakpadPlugin() {}
 
