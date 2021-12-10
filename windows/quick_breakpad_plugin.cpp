@@ -3,16 +3,12 @@
 // This must be included before many other Windows headers.
 #include <windows.h>
 
-// For getPlatformVersion; remove unless needed for your plugin implementation.
-#include <VersionHelpers.h>
-
 #include <flutter/method_channel.h>
 #include <flutter/plugin_registrar_windows.h>
 #include <flutter/standard_method_codec.h>
 
 #include <map>
 #include <memory>
-#include <sstream>
 #include <iostream>
 
 #include "client/windows/handler/exception_handler.h"
@@ -25,9 +21,12 @@ class QuickBreakpadPlugin : public flutter::Plugin {
 
   QuickBreakpadPlugin();
 
-  virtual ~QuickBreakpadPlugin();
+  ~QuickBreakpadPlugin() override;
 
  private:
+
+  google_breakpad::ExceptionHandler exception_handler_;
+
   // Called when a method is called on this plugin's channel from Dart.
   void HandleMethodCall(
       const flutter::MethodCall<flutter::EncodableValue> &method_call,
@@ -52,39 +51,43 @@ void QuickBreakpadPlugin::RegisterWithRegistrar(
   registrar->AddPlugin(std::move(plugin));
 }
 
-static bool dumpCallback(
-  const wchar_t* dump_path,
-  const wchar_t* minidump_id,
-  void *context,
-  EXCEPTION_POINTERS* exinfo,
-  MDRawAssertionInfo* assertion,
-  bool succeeded
+bool dumpCallback(
+    const wchar_t *dump_path,
+    const wchar_t *minidump_id,
+    void *context,
+    EXCEPTION_POINTERS *exinfo,
+    MDRawAssertionInfo *assertion,
+    bool succeeded
 ) {
   std::wcout << L"dump_path: " << dump_path << std::endl;
   std::wcout << L"minidump_id: " << minidump_id << std::endl;
   return succeeded;
 }
 
-QuickBreakpadPlugin::QuickBreakpadPlugin() {
-  static google_breakpad::ExceptionHandler handler(L".", nullptr, dumpCallback, nullptr, google_breakpad::ExceptionHandler::HANDLER_ALL);
+QuickBreakpadPlugin::QuickBreakpadPlugin()
+    : exception_handler_(L".", nullptr, dumpCallback, nullptr,
+                         google_breakpad::ExceptionHandler::HANDLER_ALL) {
+
 }
 
-QuickBreakpadPlugin::~QuickBreakpadPlugin() {}
+QuickBreakpadPlugin::~QuickBreakpadPlugin() = default;
 
 void QuickBreakpadPlugin::HandleMethodCall(
     const flutter::MethodCall<flutter::EncodableValue> &method_call,
     std::unique_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {
-  if (method_call.method_name().compare("getPlatformVersion") == 0) {
-    std::ostringstream version_stream;
-    version_stream << "Windows ";
-    if (IsWindows10OrGreater()) {
-      version_stream << "10+";
-    } else if (IsWindows8OrGreater()) {
-      version_stream << "8";
-    } else if (IsWindows7OrGreater()) {
-      version_stream << "7";
+  if (method_call.method_name() == "setDumpPath") {
+    auto path = std::get_if<std::string>(method_call.arguments());
+    if (!path) {
+      result->Error("InvalidArguments", "Dump path must be a string");
+      return;
     }
-    result->Success(flutter::EncodableValue(version_stream.str()));
+
+    auto new_size = path->size() + 1;
+    auto *w_path = new wchar_t[new_size];
+    mbstowcs_s(nullptr, w_path, new_size, path->c_str(), _TRUNCATE);
+    exception_handler_.set_dump_path(w_path);
+    delete[] w_path;
+    result->Success();
   } else {
     result->NotImplemented();
   }
